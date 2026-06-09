@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Untitled</title>
+    
+
+  </head>
+    
+  <body>
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Memories ❤️</title>
+
+    <style>
+    *{ margin:0; padding:0; box-sizing:border-box; font-family:Arial,sans-serif; -webkit-tap-highlight-color: transparent; }
+
+    /* --- BLUR & BLACK EFFECT FOR BACKGROUND --- */
+    body {
+        position: relative;
+        min-height: 100vh;
+        padding: 15px;
+        overflow-x: hidden;
+    }
+
+    body::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url('https://i.ibb.co/B22mSG3K/8c1c38a1-832e-4a66-90cb-909e07240520.jpg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        filter: blur(6px); 
+        -webkit-filter: blur(6px);
+        transform: scale(1.1); 
+        z-index: -2;
+    }
+
+    body::after {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.4); 
+        z-index: -1;
+    }
+
+    h1{ text-align:center; color:white; margin-bottom:20px; text-shadow:2px 2px 8px rgba(0,0,0,0.5); font-size: 1.8rem; position: relative; }
+    .music{ text-align:center; margin-bottom:25px; position: relative; }
+    audio{ width:100%; max-width:300px; }
+    .gallery{ display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:12px; position: relative; }
+
+    .card{ 
+        background: rgba(255, 255, 255, 0.15); 
+        backdrop-filter: blur(8px); 
+        -webkit-backdrop-filter: blur(8px); 
+        border-radius: 15px; 
+        overflow: hidden; 
+        box-shadow: 0 4px 10px rgba(0,0,0,0.2); 
+        transition: transform 0.3s ease, box-shadow 0.3s ease; 
+        cursor: pointer; 
+        user-select: none; 
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .card:hover, .card:active { 
+        transform: scale(1.04); 
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.7); 
+    }
+
+    .card img{ width:100%; height:180px; object-fit:cover; display:block; }
+    .caption{ padding:8px; text-align:center; color:white; font-weight:bold; font-size: 0.9rem; text-shadow: 1px 1px 3px rgba(0,0,0,0.5); }
+
+    /* --- Advanced Lightbox with 3D Flip Effect --- */
+    .lightbox-overlay { 
+        display: none; 
+        position: fixed; 
+        z-index: 1000; 
+        top: 0; 
+        left: 0; 
+        width: 100%; 
+        height: 100%; 
+        background: rgba(0, 0, 0, 0.95); 
+        backdrop-filter: blur(8px); 
+        -webkit-backdrop-filter: blur(8px); 
+        flex-direction: column;
+        justify-content: center; 
+        align-items: center; 
+    }
+
+    .flip-container {
+        width: 90%;
+        max-width: 350px;
+        height: 430px; /* Thoda height badhaya h text fitting ke liye */
+        perspective: 1000px; 
+        margin-bottom: 20px;
+    }
+
+    .flip-card-inner {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        transform-style: preserve-3d;
+        transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .flip-card-inner.flipped {
+        transform: rotateY(180deg);
+    }
+
+    .flip-front, .flip-back {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        backface-visibility: hidden; 
+        -webkit-backface-visibility: hidden;
+        border-radius: 15px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        overflow: hidden;
+    }
+
+    .flip-front img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .flip-back {
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255,255,255,0.3);
+        color: white;
+        transform: rotateY(180deg);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between; /* Content ko ache se arrange karne ke liye */
+        align-items: center;
+        padding: 20px;
+        text-align: center;
+    }
+
+    .flip-back h3 {
+        font-size: 1.4rem;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        margin-bottom: 5px;
+    }
+
+    /* Surprise Text Style (Middle) */
+    .surprise-text {
+        font-size: 1.1rem;
+        color: #ffeb3b; /* Halka yellow shade taaki highlight ho */
+        font-weight: bold;
+        margin: 8px 0;
+        text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+    }
+
+    /* Story Text Scrollable if long */
+    .story-container {
+        flex-grow: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow-y: auto;
+        padding: 5px;
+        margin-bottom: 5px;
+    }
+
+    .flip-back p {
+        font-size: 0.95rem;
+        line-height: 1.4;
+        font-weight: 500;
+    }
+
+    /* Husband Credit Text Style (Last) */
+    .husband-credit {
+        font-size: 0.9rem;
+        font-style: italic;
+        color: rgba(255, 255, 255, 0.85);
+        border-top: 1px solid rgba(255, 255, 255, 0.2);
+        width: 100%;
+        padding-top: 8px;
+        margin-top: 5px;
+    }
+
+    .btn-container {
+        display: flex;
+        gap: 15px;
+    }
+
+    .lightbox-btn {
+        background: white;
+        color: #ff69b4;
+        border: none;
+        padding: 10px 20px;
+        font-size: 1rem;
+        font-weight: bold;
+        border-radius: 25px;
+        cursor: pointer;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        transition: 0.2s;
+    }
+
+    .lightbox-btn.close-btn {
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.4);
+    }
+    </style>
+</head>
+<body>
+
+<h1>❤️ My Special Memories❤️</h1>
+
+<div class="music">
+    <audio controls autoplay loop>
+        <source src="https://files.catbox.moe/58qky7.mp3" type="audio/mpeg">
+    </audio>
+</div>
+
+<div class="gallery">
+
+    <div class="card" data-info="Yeh hamari sabse pehli photo hai! Mujhe aaj bhi yaad hai woh din.aur hamne uss din ek dusare ko full rights de diye the kuch bhi karne ka literally ye din mai kabhi bhi nhi bhul sakta hu meri bangaruu konda ❤ 🥰">
+        <img src="https://i.ibb.co/CpnvvxSw/IMG-3209.jpg">
+        <div class="caption">August ❤️</div>
+    </div>
+
+    <div class="card" data-info="phir ye september aaya ye mahine mai hamne bahoooot enjoy kiya ek dusare ko deeply jana aur ek dusare ko khub pyaar kiya ek dusare ke bina rehne ko nhi ho raha tha ye mahine mai miss bhi kiya tha apko mai ❤. ✨">
+        <img src="https://i.ibb.co/SHLKkLH/IMG-3208.jpg">
+        <div class="caption">September❤️</div>
+    </div>
+
+    <div class="card" data-info="Ye apka sabse pehla photo hai saree mai jo apke bheja tha literally iske baad mai pagal hi ho gaya apke liye bangaram ji aur mai apko saree mai pass se nhi dekh paya mai gav gaya tha bahoooot jyada miss kiye ek dusare ko mai full roya tha apke liye bangaram but aane ke baad ek alag hi happines tha dono ko ✨﫠">
+        <img src="https://i.ibb.co/qM8d2MZW/IMG-3206.jpg">
+        <div class="caption">Octuber ❤️</div>
+    </div>
+
+    <div class="card" data-info="November ka mahina hamara thoda hard gaya tha thode doubts the thoda misunderstanding tha par sab clear ho gaya and ham pehele jaise pyaar se rehne lage but ye samajh aa gaya ki ham kitna bhi ladayi kare ham dono last mai ek dusare ke pass hi aate bangaruuu kondaa奈❤">
+        <img src="https://i.ibb.co/1JBTNPyB/IMG-3207.jpg">
+        <div class="caption">November ❤️</div>
+    </div>
+
+    <div class="card" data-info="Uske baad aaya ye December ka mahina jisme hanare beech aur bhi pyaar badha and kuch log aaye apne boyfriend ko leke hamare beech mai kuch matter solve karane but solve kum hamare beech mai ladayi karwa ke chale gaye but tho bhi hamne ek dusare ko samajha aur pehele se aur bhi jyada pyaar karna suru kar diye 凉❤">
+        <img src="https://i.ibb.co/cKx4WW7z/IMG-3204.jpg">
+        <div class="caption">December ❤️</div>
+    </div>
+
+    <div class="card" data-info="Aur ye sab ke baad aaya ek aur bada test dene ki bari jaha pe hamne new year ke din hi thoda ek dusare ko misunderstood kiya and ye mahine mai hamara mata ji test le rahi thi uske wajah se ye hua ki ye mahine mai apke mummy ko pata chal gaya sab kuch par hame isse bahar phir mata ji ne nikala and itna kuch hone ke baad bhi ham abhi bhi ek dusare ka sath hamesha khade hai and bangaram mai apse bahoot pyaar karta hu last mai hamne apne pyaar se phirse ek dusare ke paas aa gaye ❤✨">
+        <img src="https://i.ibb.co/PGSbpQ5p/4a06ff8d-98dc-499c-9c49-6c77874c76e0.jpg">
+        <div class="caption">January ❤️</div>
+    </div>
+
+    <div class="card" data-info="ek aur chota sa ladayi hamare beech phirse hua lekin hamne ye mahine mai starting mai thoda miss kiya ek dusare ko but ye mahi best tha kyu pata hai kyu ki 25 se exam start huye the uske baad ham uper terrece pe kitna enjoy kiye the yaad hai bahooot bole tho bahooot aur mai apke godi mai soya tha haaayeee vo pyaare din mai phirse aise din ka wait kar raha hu apko wait hai bangaruu konda ❤">
+        <img src="https://i.ibb.co/m5wTx2sJ/IMG-1155.jpg">
+        <div class="caption">February ❤️</div>
+    </div>
+
+    <div class="card" data-info="ye mahine ka kya batao mai ye mahina tho feb aur march ek number matlab ek dum musth gaya tha ham padhne ke bahane se terrece pe kya kya karte the chhupke literally yaar kya din tha vo apko padhne ke bahane se uper bulana hai dudu peeta tha  hehe aur hamne apne kitne baccho ko khoya terrece ke door ke peeche hehe sharam aa rahi hai na thodi hehe mere ko bhi 🫣✨">
+        <img src="https://i.ibb.co/JRbhpGL2/23eb5f23-3689-45a4-91b4-4e898c68dda0.jpg">
+        <div class="caption">March ❤️</div>
+    </div>
+
+    <div class="card" data-info="Oo meri bangaruu konda itna aage padte huye aa gaye aap haaayeee kitna pyaar karte ho yaar aap mere se tho aage suno aur hamara april ka mahina bhi ek dum pyaar bhara gaya but ye mahine mai bhi hamare beech thode ladayia huye but hamne ek dusare ko samjha aur hamne ek dusare ko pehele se aur bhi jyada pyaar kiya literally bangaram aap mere life mai aaye mera pura life bun gaya bangaram ❤">
+        <img src="https://i.ibb.co/ZZtSWRV/6168475e-b5ea-4f65-ba76-f109edd72958.jpg">
+        <div class="caption">April ❤️</div>
+    </div>
+
+    <div class="card" data-info="phir aaya mera pyaara mahina may yahi mahina tha jab ham last year mile the and ham ek dusare ko janna suru kiye and yahi mahine mai mere ko pata nhi tha ye aisa gift mil jayega ki meri life puri turn ho jayegi and guss what aap mile mere ko haaayeeee literally vo instagram ke chats reels haayeeee and vo apka proposal bangaram and mera reply mee too karke hehe aap gussa huye but mai usse jyata happy tha cuz mere ko mera life mil gaya tha and ye mera cute sa baccha bhi ❤☁">
+        <img src="https://i.ibb.co/N2t57xND/37-EB0-AB3-1956-4-F34-AF95-C11-EF403-E795.jpg">
+        <div class="caption">May ❤️</div>
+    </div>
+
+    <div class="card" data-info="Haaayeeee, aa hi gaya woh mahina jab hum pehli baar mile the aur ek dusre ki aankhon mein doob gaye the, jaise saalon se bichhde hue the.09/06/2025 woh din tha jisne hume literally 2 bodies, 1 soul bana diya.Meri Bangaram ki uss din ki happiness ko words mein bayan karna मुश्किल hai. Main aur meri Bangaram uss din duniya ke sabse khush log the.Meri life ka best din, best year. I love you Bangaram, kya aap mujhse shaadi karogi? ❤">
+        <img src="https://i.ibb.co/Nd43WGN5/IMG-3210.jpg">
+        <div class="caption">June❤️</div>
+    </div>
+
+</div>
+
+<div id="lightbox" class="lightbox-overlay">
+    <div class="flip-container">
+        <div id="flip-card-inner" class="flip-card-inner">
+            <div class="flip-front">
+                <img id="lightbox-img" src="">
+            </div>
+            <div class="flip-back">
+                <h3 id="info-title">Our Story</h3>
+                
+                <div class="surprise-text">kaisa laga apke pati ja surprise 🙈🤌🏻🥹</div>
+                
+                <div class="story-container">
+                    <p id="info-text">Kuch pyari baatein yahan dikhengi...</p>
+                </div>
+                
+                <div class="husband-credit">made by your husband 🤌🏻❤️</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="btn-container">
+        <button id="flip-btn" class="lightbox-btn">🔄 Flip Photo</button>
+        <button id="close-btn" class="lightbox-btn close-btn">❌ Close</button>
+    </div>
+</div>
+
+<script>
+    const galleryCards = document.querySelectorAll('.card');
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+    const flipCardInner = document.getElementById('flip-card-inner');
+    const flipBtn = document.getElementById('flip-btn');
+    const closeBtn = document.getElementById('close-btn');
+    const infoText = document.getElementById('info-text');
+    const infoTitle = document.getElementById('info-title');
+
+    galleryCards.forEach(card => {
+        card.addEventListener('click', () => {
+            const img = card.querySelector('img');
+            const text = card.getAttribute('data-info'); 
+            const caption = card.querySelector('.caption').innerText;
+
+            lightboxImg.src = img.src; 
+            infoText.innerText = text; 
+            infoTitle.innerText = caption;
+
+            flipCardInner.classList.remove('flipped'); 
+            lightbox.style.display = 'flex'; 
+        });
+    });
+
+    flipBtn.addEventListener('click', (e) => {
+        e.stopPropagation(); 
+        flipCardInner.classList.toggle('flipped'); 
+    });
+
+    closeBtn.addEventListener('click', () => {
+        lightbox.style.display = 'none';
+    });
+</script>
+
+</body>
+</html>
+    
+  </body>
+  
+</html>
